@@ -1,0 +1,5 @@
+{
+  "name": "無聊電子雞",
+  "description": "A fully functional 3D Voxel Tamagotchi built with Three.js and React. Raise your voxel pet, keep it happy, clean up after it, and watch it evolve!",
+  "requestFramePermissions": []
+}
