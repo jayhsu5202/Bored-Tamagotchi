@@ -1,6 +1,12 @@
 # 🐣 無聊電子雞 | Bored Tamagotchi | 退屈なたまごっち
 
-![無聊電子雞 Game Preview](images/preview.png)
+<!-- 
+⚠️ 圖片顯示注意事項 / Note on Images:
+由於上傳工具限制，圖片檔可能會損毀導致無法顯示。請手動將 'preview.png', 'gameplay.png', 'card.png' 上傳至 GitHub 的 'images/' 資料夾。
+Due to upload tool limitations, image files might be corrupted. Please manually upload the images to the 'images/' folder on GitHub.
+-->
+
+<!-- ![無聊電子雞 Game Preview](images/preview.png) -->
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![React](https://img.shields.io/badge/React-18-61DAFB)
@@ -17,7 +23,7 @@
 
 ### ✨ 特色功能
 
-![Gameplay Screenshot](images/gameplay.png)
+<!-- ![Gameplay Screenshot](images/gameplay.png) -->
 
 *   **3D 體素寵物**：程式化生成的寵物（小雞或小豬），每一隻都有獨特的顏色與外觀。
 *   **完整養成系統**：管理寵物的飢餓度、清潔度、心情、體力與體重。
@@ -31,7 +37,7 @@
 
 ### 📸 攝影棚模式
 
-![Photo Mode Card Example](images/card.png)
+<!-- ![Photo Mode Card Example](images/card.png) -->
 *實際生成的寵物身分證卡片範例*
 
 *   **拍照**：調整角度並拍攝寵物的拍立得風格卡片。
