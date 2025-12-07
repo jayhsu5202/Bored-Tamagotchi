@@ -13,6 +13,7 @@ export interface GameStats {
   seed: string;
   name: string;
   species: Species;
+  isImmortal?: boolean; // God mode flag
 }
 
 export interface LocalizationData {

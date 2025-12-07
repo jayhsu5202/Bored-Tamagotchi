@@ -126,6 +126,24 @@ const App: React.FC = () => {
   };
 
   const confirmImport = () => {
+      // Cheat Code: 666666 - Enable Invincibility
+      if (saveCode === '666666') {
+          if (engineRef.current) {
+              const current = engineRef.current.getStats();
+              const newStats = {
+                  ...current,
+                  isAlive: true,
+                  hunger: 100, // Restore hunger
+                  weight: Math.max(current.weight, 50), // Restore weight to at least normal
+                  happiness: 100,
+                  isImmortal: true
+              };
+              engineRef.current.loadState(newStats);
+              setModalOpen(null);
+          }
+          return;
+      }
+
       const data = decrypt(saveCode);
       if (data && data.seed && engineRef.current) {
           engineRef.current.loadState(data);

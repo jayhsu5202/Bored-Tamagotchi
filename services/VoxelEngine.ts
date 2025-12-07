@@ -89,6 +89,7 @@ export class VoxelEngine {
       seed: Math.random().toString(36).substring(7),
       name: 'Loading...',
       species: Math.random() > 0.5 ? 'pig' : 'chicken',
+      isImmortal: false,
     };
 
     // Three.js Init
@@ -820,12 +821,18 @@ export class VoxelEngine {
   public feed() {
     // Prevent feeding if already full, or allow if user wants to make pet fat
     // Changed logic: Can feed if not sleeping/dragged. If hunger > 90, increases weight.
-    if (!this.stats.isAlive || this.foodItem || this.stats.isSleeping || this.isDragging) return;
+    if (!this.stats.isAlive || this.stats.isSleeping || this.isDragging) return;
     
-    // Check if totally stuffed
-    if (this.stats.hunger >= 100) {
-        // If hunger is full, we can still feed to increase weight immediately?
-        // Let's spawn food anyway, eating logic handles the weight gain
+    // Clear old food if exists to prevent clutter
+    if (this.foodItem) {
+        this.scene.remove(this.foodItem);
+        this.foodItem.traverse((child) => {
+             if (child instanceof THREE.Mesh) {
+                 child.geometry.dispose();
+                 if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
+                 else child.material.dispose();
+             }
+        });
     }
     
     const group = new THREE.Group();
@@ -947,19 +954,43 @@ export class VoxelEngine {
             this.stats.energy = Math.min(100, this.stats.energy + (STAT_DECAY_RATE * 0.2 * dt));
             this.stats.hunger = Math.max(0, this.stats.hunger - (STAT_DECAY_RATE * 0.005 * dt)); 
         } else {
+            // Normal decay
             this.stats.hunger = Math.max(0, this.stats.hunger - (STAT_DECAY_RATE * 0.015 * dt));
             this.stats.hygiene = Math.max(0, this.stats.hygiene - (STAT_DECAY_RATE * 0.01 * dt));
-            this.stats.happiness = Math.max(0, this.stats.happiness - (STAT_DECAY_RATE * 0.02 * dt));
             this.stats.energy = Math.max(0, this.stats.energy - (STAT_DECAY_RATE * 0.01 * dt));
+            
+            // Happiness decay (normal)
+            let happyDecay = STAT_DECAY_RATE * 0.02 * dt;
 
-            if (this.stats.hunger <= 0 && Math.random() < 0.001) {
-                // Chance to die if starving
-                this.stats.isAlive = false;
+            // --- Starvation Logic ---
+            if (this.stats.hunger <= 0) {
+                // If hungry, burn 'fat' (weight)
+                // Burn slower than hunger decay to give player time (approx 3-5 mins from full fat to death)
+                this.stats.weight = Math.max(0, this.stats.weight - (STAT_DECAY_RATE * 0.005 * dt));
+                
+                // Being starving makes you very unhappy
+                happyDecay *= 3; 
+                
+                // Death condition: Ran out of fat
+                if (this.stats.weight <= 0) {
+                    if (this.stats.isImmortal) {
+                        this.stats.weight = 1; // Minimum weight to stay alive
+                        this.stats.isAlive = true;
+                    } else {
+                        this.stats.isAlive = false;
+                    }
+                }
+            } else {
+                 this.stats.happiness = Math.max(0, this.stats.happiness - happyDecay);
             }
 
-            // Poop logic: increased chance slightly to verify logic works
-            if (this.stats.hygiene < 60 && Math.random() < 0.001) this.spawnPoop();
-            if (this.poops.children.length > 0) this.stats.hygiene = Math.max(0, this.stats.hygiene - 0.05);
+            // Poop Logic: Random chance to poop, unrelated to hygiene (approx once every 50-60s)
+            if (Math.random() < 0.0003) this.spawnPoop();
+            
+            // If poop exists, hygiene drops faster
+            if (this.poops.children.length > 0) {
+                this.stats.hygiene = Math.max(0, this.stats.hygiene - 0.05);
+            }
         }
     }
 
@@ -992,15 +1023,27 @@ export class VoxelEngine {
       
       const isChicken = this.stats.species === 'chicken';
 
-      // --- FAT MECHANIC VISUALS ---
-      // Scale body width based on weight (50 is normal, >50 gets wider)
-      const weightFactor = Math.max(0, this.stats.weight - 50) / 100;
-      const fatScale = 1 + weightFactor * 1.5; // Up to 2.5x width
+      // --- FAT / SKINNY MECHANIC VISUALS ---
+      // Scale body width based on weight. 50 is normal.
+      let targetScaleXZ = 1;
+      let targetScaleY = 1;
+
+      if (this.stats.weight > 50) {
+          // Fat logic
+          const weightFactor = (this.stats.weight - 50) / 50; // 0 to 1
+          targetScaleXZ = 1 + weightFactor * 1.5; // Up to 2.5x width
+          targetScaleY = 1 - weightFactor * 0.2; // Slight squash
+      } else {
+          // Skinny logic (Starving)
+          const skinnyFactor = (50 - this.stats.weight) / 50; // 0 (normal) to 1 (dead)
+          targetScaleXZ = 1 - (skinnyFactor * 0.3); // Down to 0.7x width
+          targetScaleY = 1; // Don't stretch vertically, just look thin
+      }
+
       // Interpolate scale for smoothness
-      this.parts.body.scale.x = THREE.MathUtils.lerp(this.parts.body.scale.x, fatScale, 0.1);
-      this.parts.body.scale.z = THREE.MathUtils.lerp(this.parts.body.scale.z, fatScale, 0.1);
-      // Slight vertical squash if very fat
-      this.parts.body.scale.y = THREE.MathUtils.lerp(this.parts.body.scale.y, 1 - weightFactor * 0.2, 0.1);
+      this.parts.body.scale.x = THREE.MathUtils.lerp(this.parts.body.scale.x, targetScaleXZ, 0.1);
+      this.parts.body.scale.z = THREE.MathUtils.lerp(this.parts.body.scale.z, targetScaleXZ, 0.1);
+      this.parts.body.scale.y = THREE.MathUtils.lerp(this.parts.body.scale.y, targetScaleY, 0.1);
 
       // --- BREATHING ---
       if (this.currentState !== 'SLEEP' && this.currentState !== 'DRAGGED') {
@@ -1012,6 +1055,7 @@ export class VoxelEngine {
       if (this.isPhotoMode) return;
 
       // Heavy pet moves slower
+      const weightFactor = Math.max(0, this.stats.weight - 50) / 100;
       const speedModifier = Math.max(0.3, 1.0 - weightFactor);
 
       switch (this.currentState) {
@@ -1108,7 +1152,7 @@ export class VoxelEngine {
                       } else {
                           this.stats.hunger = Math.min(100, this.stats.hunger + 30);
                           // Eating restores a little bit of weight if underweight
-                          if (this.stats.weight < 50) this.stats.weight += 2;
+                          if (this.stats.weight < 50) this.stats.weight += 5; 
                       }
                       
                       this.spawnParticle(this.petRoot.position, 0xFFD54F, 10);

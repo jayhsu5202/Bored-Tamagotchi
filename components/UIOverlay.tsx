@@ -68,8 +68,8 @@ const UIOverlay: React.FC<UIOverlayProps> = ({
             
             {/* Left: Name & Level */}
             <div className="bg-white/90 backdrop-blur-xl px-3 py-1.5 md:px-4 md:py-2 rounded-2xl shadow-lg border border-white/50 flex flex-col min-w-[100px] md:min-w-[120px]">
-                <h1 className="text-base md:text-lg font-black text-gray-800 leading-none truncate max-w-[120px] md:max-w-[150px]">
-                    {stats.name}
+                <h1 className="text-base md:text-lg font-black text-gray-800 leading-none truncate max-w-[120px] md:max-w-[150px] flex items-center gap-1">
+                    {stats.name} {stats.isImmortal && <span className="text-yellow-500 text-xs" title="Invincible">★</span>}
                 </h1>
                 <div className="flex items-center gap-2 mt-0.5 md:mt-1">
                     <span className="text-[9px] md:text-[10px] font-bold text-white bg-blue-500 px-2 py-0.5 rounded-full">
@@ -97,7 +97,7 @@ const UIOverlay: React.FC<UIOverlayProps> = ({
                 </div>
 
                 <div className="flex gap-1.5 md:gap-2 bg-white/90 backdrop-blur-xl rounded-2xl p-1.5 shadow-lg border border-white/50">
-                    <ToolBtn onClick={onPhoto} icon={<path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>} />
+                    <ToolBtn onClick={onPhoto} icon={<path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24 5 5-5 5 2.24 5 5-2.24 5-5 5z"/>} />
                     <ToolBtn onClick={onNewPet} icon={<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>} />
                     <ToolBtn onClick={onExport} icon={<path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>} />
                     <ToolBtn onClick={onImport} icon={<path d="M5 15h4v6h6v-6h4l-7-7-7 7zM19 6H5v2h14V6z"/>} />
