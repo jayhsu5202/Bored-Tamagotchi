@@ -1,5 +1,9 @@
 # 🐣 無聊電子雞 | Bored Tamagotchi | 退屈なたまごっち
 
+<p align="center">
+  <img src="images/preview.png" alt="無聊電子雞 Game Preview" width="100%" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</p>
+
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![React](https://img.shields.io/badge/React-18-61DAFB)
 ![Three.js](https://img.shields.io/badge/Three.js-r160-black)
@@ -14,6 +18,11 @@
 **無聊電子雞** 是一個運行在瀏覽器上的 3D 體素（Voxel）風格寵物養成遊戲。完全使用 React 和 Three.js 構建，無需後端，支援離線遊玩。
 
 ### ✨ 特色功能
+
+<p align="center">
+  <img src="images/gameplay.png" alt="Gameplay Screenshot" width="80%" style="border-radius: 8px;">
+</p>
+
 *   **3D 體素寵物**：程式化生成的寵物（小雞或小豬），每一隻都有獨特的顏色與外觀。
 *   **完整養成系統**：管理寵物的飢餓度、清潔度、心情、體力與體重。
 *   **互動行為**：
@@ -23,8 +32,16 @@
     *   睡眠：恢復體力。
 *   **進化系統**：細心照顧，寵物將會長大進化。
 *   **存檔功能**：透過加密代碼匯出/匯入存檔，隨時備份你的寵物。
-*   **攝影棚模式**：調整角度並拍攝寵物的拍立得風格卡片。
-*   **多國語言**：支援繁體中文、英文、日文。
+
+### 📸 攝影棚模式
+
+<div align="center">
+  <img src="images/card.png" alt="Photo Mode Card Example" width="350" style="border-radius: 10px; border: 4px solid #3b82f6;">
+  <p><i>實際生成的寵物身分證卡片範例</i></p>
+</div>
+
+*   **拍照**：調整角度並拍攝寵物的拍立得風格卡片。
+*   **分享**：下載生成的圖片與朋友分享你的專屬寵物。
 
 ### 🚀 快速開始
 
@@ -56,6 +73,7 @@
 **Bored Tamagotchi** is a fully functional 3D voxel pet simulation game running directly in your browser. Built with React and Three.js, it features procedural generation and interactive gameplay.
 
 ### ✨ Features
+
 *   **3D Voxel Pets**: Procedurally generated pets (Chickens or Pigs) with unique palettes and traits.
 *   **Care System**: Manage Hunger, Hygiene, Happiness, Energy, and Weight.
 *   **Interactions**:
@@ -66,7 +84,6 @@
 *   **Evolution**: Maintain high stats to trigger evolution and growth.
 *   **Save System**: Export/Import your pet data via encrypted save strings.
 *   **Photo Studio**: Take snapshots of your pet and generate downloadable stats cards.
-*   **Localization**: Supports English, Traditional Chinese, and Japanese.
 
 ### 🚀 Getting Started
 
@@ -98,6 +115,7 @@ This project is configured for Vite and ready for Cloudflare Pages:
 **退屈なたまごっち**は、ブラウザで動作する3Dボクセルスタイルのペット育成シミュレーションゲームです。ReactとThree.jsで作られており、バックエンド不要で動作します。
 
 ### ✨ 特徴
+
 *   **3Dボクセルペット**：プロシージャル生成されたペット（ニワトリやブタ）が登場します。一匹ごとに色が異なります。
 *   **育成システム**：満腹度、清潔さ、機嫌、元気、そして体重を管理しましょう。
 *   **インタラクション**：
@@ -108,7 +126,6 @@ This project is configured for Vite and ready for Cloudflare Pages:
 *   **進化**：大切に育てると、ペットは進化して大きくなります。
 *   **セーブ機能**：暗号化されたコードでセーブデータを書き出し・読み込みが可能です。
 *   **撮影スタジオ**：ペットの写真を撮って、ステータスカードとして保存できます。
-*   **多言語対応**：日本語、英語、繁体字中国語に対応。
 
 ### 🚀 始め方
 
